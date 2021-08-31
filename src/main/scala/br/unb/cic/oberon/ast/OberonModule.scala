@@ -215,7 +215,7 @@ sealed trait UserDefinedType{
 
 case class RecordType(name: String, variables: List[VariableDeclaration]) extends UserDefinedType
 case class ArrayType(name: String, length: Int, variableType: Type) extends UserDefinedType
-
+//case class PointerType(name: String, variableType: Type) extends UserDefinedType
 
 /** The hierarchy for the Oberon supported types */
 sealed trait Type {

@@ -22,9 +22,14 @@ declarations
   ;
 
 userTypeDeclaration
-  : nameType = Id '=' ('ARRAY' length = INT 'OF' baseType = oberonType)      #ArrayTypeDeclaration
-  | nameType = Id '=' ('RECORD' (vars += varDeclaration)+ 'END')            #RecordTypeDeclaration
+  : nameType = Id '=' baseType = userType
   ;
+
+userType
+: ('ARRAY' length = INT 'OF' baseType = oberonType)     #ArrayTypeDeclaration
+| ('RECORD' (vars += varDeclaration)+ 'END')            #RecordTypeDeclaration
+| ('POINTER' 'TO' baseType = oberonType)                #PointerTypeDeclaration
+;
 
 constant
   : constName = Id '=' exp = expression ';'
@@ -101,6 +106,7 @@ designator
   : var = Id                                                          #VarAssignment
   | array = expression '[' elem = expression ']'                      #ArrayAssignment
   | record = expression '.' name = Id                                 #RecordAssignment
+//  | pointer = Id '^'                                                  #PointerAssignment
   ;
 
 caseAlternative
@@ -133,6 +139,7 @@ oberonType
  | 'CHAR'            #CharacterType
  | 'BOOLEAN'         #BooleanType
  | 'STRING'          #StringType
+ | userType          #ArrayRecordPointer
  | name = Id         #ReferenceType        // Reference for user defined types
  ;
 

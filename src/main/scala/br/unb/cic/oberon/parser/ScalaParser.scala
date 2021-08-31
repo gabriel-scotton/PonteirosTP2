@@ -665,6 +665,15 @@ class ParserVisitor {
 
       uType = ArrayType(name, length, baseType)
     }
+
+//    override def visitPointerTypeDeclaration(ctx: OberonParser.PointerTypeDeclarationContext): Unit = {
+//      val typeVisitor = new ParserVisitor()
+//
+//      val name = ctx.nameType.getText
+//      val baseType = typeVisitor.visitOberonType(ctx.baseType)
+//
+//      uType = PointerType(name, baseType)
+//    }
   }
 
 
