@@ -139,7 +139,7 @@ oberonType
  | 'CHAR'            #CharacterType
  | 'BOOLEAN'         #BooleanType
  | 'STRING'          #StringType
- | userType          #ArrayRecordPointer
+ | userType          #ComplexType
  | name = Id         #ReferenceType        // Reference for user defined types
  ;
 
