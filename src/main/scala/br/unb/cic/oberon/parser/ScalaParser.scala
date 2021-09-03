@@ -73,10 +73,11 @@ class ParserVisitor {
     val constants = ctx.declarations().constant().asScala.toList.map(c => visitConstant(c))
     variables = ctx.declarations().varDeclaration().asScala.toList.map(v => visitVariableDeclaration(v)).flatten
     val procedures = ctx.declarations().procedure().asScala.toList.map(p => visitProcedureDeclaration(p))
-    val userTypes = ctx.declarations().userTypeDeclaration().asScala.toList.map(t => visitUserDefinedType(t))
+    val userDefinedTypes = ctx.declarations().userTypeDeclaration().asScala.toList.map(t => visitUserDefinedType(t))
+//    val userTypes = ctx.declarations().userTypeDeclaration().asScala.toList.map(t => visitUserType(t))
     val block = visitModuleBlock(ctx.block())
 
-    module = OberonModule(name.getText, submodules, userTypes, constants, variables, procedures, block)
+    module = OberonModule(name.getText, submodules, userTypes  , userDefinedTypes, constants, variables, procedures, block)
   }
 
   /**
@@ -169,6 +170,13 @@ class ParserVisitor {
 
   def visitUserDefinedType(ctx: OberonParser.UserTypeDeclarationContext): UserDefinedType = {
     val userTypeVisitor = new UserDefinedTypeVisitor()
+
+    ctx.accept(userTypeVisitor)
+    userTypeVisitor.uType
+  }
+
+  def visitUserType(ctx: OberonParser.UserTypeContext): UserType = {
+    val userTypeVisitor = new UserTypeVisitor()
 
     ctx.accept(userTypeVisitor)
     userTypeVisitor.uType
@@ -636,14 +644,57 @@ class ParserVisitor {
 
       assignmentAlt = RecordAssignment(record, atrib)
     }
+
+//    override def visitPointerAssignment(ctx: OberonParser.PointerAssignmentContext): Unit = {
+//      val varName = ctx.
+//      assignmentAlt = VarAssignment(varName)
+//    }
   }
 
   class UserDefinedTypeVisitor extends OberonBaseVisitor[Unit] {
     var uType: UserDefinedType = _
 
+//    override def visitRecordTypeDeclaration(ctx: OberonParser.RecordTypeDeclarationContext): Unit = {
+//      val variablesList = new ListBuffer[VariableDeclaration]
+//      val name = ctx.nameType.getText
+//
+//      ctx.vars.asScala.toList.foreach(variable => {
+//        val varList = visitVariableDeclaration(variable)
+//
+//        varList.foreach(v => {
+//          variablesList += v
+//        })
+//      })
+//
+//      uType = RecordType(name, variablesList.toList)
+//    }
+//
+//    override def visitArrayTypeDeclaration(ctx: OberonParser.ArrayTypeDeclarationContext): Unit = {
+//      val typeVisitor = new ParserVisitor()
+//
+//      val name = ctx.nameType.getText
+//      val length = ctx.length.getText.toInt
+//      val baseType = typeVisitor.visitOberonType(ctx.baseType)
+//
+//      uType = ArrayType(name, length, baseType)
+//    }
+
+//    override def visitPointerTypeDeclaration(ctx: OberonParser.PointerTypeDeclarationContext): Unit = {
+//      val typeVisitor = new ParserVisitor()
+//
+//      val name = ctx.nameType.getText
+//      val baseType = typeVisitor.visitOberonType(ctx.baseType)
+//
+//      uType = PointerType(name, baseType)
+//    }
+  }
+
+  class UserTypeVisitor extends OberonBaseVisitor[Unit] {
+    var uType: UserType = _
+
     override def visitRecordTypeDeclaration(ctx: OberonParser.RecordTypeDeclarationContext): Unit = {
       val variablesList = new ListBuffer[VariableDeclaration]
-      val name = ctx.nameType.getText
+      val name = ctx.getText
 
       ctx.vars.asScala.toList.foreach(variable => {
         val varList = visitVariableDeclaration(variable)
@@ -659,22 +710,27 @@ class ParserVisitor {
     override def visitArrayTypeDeclaration(ctx: OberonParser.ArrayTypeDeclarationContext): Unit = {
       val typeVisitor = new ParserVisitor()
 
-      val name = ctx.nameType.getText
+      val name = ctx.getText
       val length = ctx.length.getText.toInt
       val baseType = typeVisitor.visitOberonType(ctx.baseType)
 
       uType = ArrayType(name, length, baseType)
     }
 
-//    override def visitPointerTypeDeclaration(ctx: OberonParser.PointerTypeDeclarationContext): Unit = {
+//    override def visitRecordTypeDeclaration(ctx: OberonParser.RecordTypeDeclarationContext): Unit = {
 //      val typeVisitor = new ParserVisitor()
+//      val name = ctx.getText
 //
-//      val name = ctx.nameType.getText
-//      val baseType = typeVisitor.visitOberonType(ctx.baseType)
+//      ctx.vars.asScala.toList.foreach(variable => {
+//        val varList = visitVariableDeclaration(variable)
+//
+//        varList.foreach(v => {
+//          variablesList += v
+//        })
+//      })
 //
 //      uType = PointerType(name, baseType)
 //    }
   }
-
 
 }

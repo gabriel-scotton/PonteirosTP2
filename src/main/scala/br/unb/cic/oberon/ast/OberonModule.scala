@@ -18,7 +18,8 @@ import br.unb.cic.oberon.environment.Environment
  */
 case class OberonModule(name: String,
                         submodules: Set[String],
-                        userTypes: List[UserDefinedType],
+                        userTypes: List[UserType],
+                        userDefinedType: List[UserDefinedType],
                         constants: List[Constant],
                         variables: List[VariableDeclaration],
                         procedures: List[Procedure],
@@ -201,6 +202,7 @@ trait AssignmentAlternative
 case class VarAssignment(varName: String) extends AssignmentAlternative
 case class ArrayAssignment(array: Expression, elem: Expression) extends AssignmentAlternative
 case class RecordAssignment(record: Expression, atrib: String) extends AssignmentAlternative
+case class PointerAssignment(pointer: String) extends AssignmentAlternative
 
 
 /**
@@ -212,10 +214,20 @@ case class RecordAssignment(record: Expression, atrib: String) extends Assignmen
 sealed trait UserDefinedType{
   def accept(v: OberonVisitor): v.T = v.visit(this)
 }
+case object RecordType extends UserDefinedType
+case object ArrayType extends UserDefinedType
+case object PointerType extends UserDefinedType
 
-case class RecordType(name: String, variables: List[VariableDeclaration]) extends UserDefinedType
-case class ArrayType(name: String, length: Int, variableType: Type) extends UserDefinedType
-//case class PointerType(name: String, variableType: Type) extends UserDefinedType
+//case class RecordType(name: String, variables: List[VariableDeclaration]) extends UserDefinedType
+//case class ArrayType(name: String, length: Int, variableType: Type) extends UserDefinedType
+
+sealed trait UserType{
+  def accept(v: OberonVisitor): v.T = v.visit(userType = this)
+}
+case class RecordType(name: String, variables: List[VariableDeclaration]) extends UserType
+case class ArrayType(name: String, length: Int, variableType: Type) extends UserType
+case class PointerType(name: String, variableType: Type) extends UserType
+
 
 /** The hierarchy for the Oberon supported types */
 sealed trait Type {

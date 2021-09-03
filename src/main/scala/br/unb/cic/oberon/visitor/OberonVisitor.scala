@@ -25,7 +25,8 @@ trait OberonVisitor {
   def visit(stmt: Statement) : T
   def visit(aType: Type): T
   def visit(caseAlt: CaseAlternative): T
-  def visit(userType: UserDefinedType): T
+  def visit(userDefType: UserDefinedType): T
+  def visit(userType: UserType): T
 }
 
 abstract class OberonVisitorAdapter extends OberonVisitor {
@@ -39,5 +40,6 @@ abstract class OberonVisitorAdapter extends OberonVisitor {
   override def visit(stmt: Statement): T = ???
   override def visit(aType: Type): T = ???
   override def visit(caseAlt: CaseAlternative): T = ???
-  override def visit(userType: UserDefinedType): T = ???
+  override def visit(userDefType: UserDefinedType): T = ???
+  override def visit(userType: UserType): T = ???
 }
