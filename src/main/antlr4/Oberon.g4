@@ -68,6 +68,7 @@ expression
  | name = qualifiedName                                                                   #Variable
  | name = qualifiedName '(' arguments? ')'                                                #FunctionCall
  | exp = expression '.' name = Id                                                         #FieldAccess
+// | name = Id '^'                                                                          #PointerVarAccess
  | arrayBase = expression '[' index = expression ']'                                      #ArraySubscript
  | left = expression opr = ('=' | '#' | '<' | '<=' | '>' | '>=')  right = expression      #RelExpression
  | left = expression opr = ('*' | '/' | '&&') right = expression                          #MultExpression
@@ -139,8 +140,8 @@ oberonType
  | 'CHAR'            #CharacterType
  | 'BOOLEAN'         #BooleanType
  | 'STRING'          #StringType
- | userType          #ComplexType
  | name = Id         #ReferenceType        // Reference for user defined types
+ | userType          #ComplexType
  ;
 
 INT : '-'? Digit+;
