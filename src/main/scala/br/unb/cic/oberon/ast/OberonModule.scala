@@ -146,6 +146,7 @@ case class ArrayValue(value: List[Expression]) extends Value { type T = List[Exp
 case class ArraySubscript(arrayBase: Expression, index: Expression) extends Expression
 case class Undef() extends Expression
 case class FieldAccessExpression(exp: Expression, name: String) extends Expression
+case class PointerAccessExpression(name: String) extends Expression
 case class VarExpression(name: String) extends Expression
 case class FunctionCallExpression(name: String, args: List[Expression]) extends Expression
 case class EQExpression(left:  Expression, right: Expression) extends Expression
@@ -201,6 +202,7 @@ trait AssignmentAlternative
 case class VarAssignment(varName: String) extends AssignmentAlternative
 case class ArrayAssignment(array: Expression, elem: Expression) extends AssignmentAlternative
 case class RecordAssignment(record: Expression, atrib: String) extends AssignmentAlternative
+case class PointerAssignment(pointerName: String) extends AssignmentAlternative
 
 
 /**

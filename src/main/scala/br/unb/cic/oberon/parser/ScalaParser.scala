@@ -345,6 +345,11 @@ class ParserVisitor {
       exp = ArraySubscript(arrayBase, index)
     }
 
+    override def visitPointerAccess(ctx: OberonParser.PointerAccessContext): Unit = {
+      exp = PointerAccessExpression(ctx.name.getText)
+    }
+
+
     override def visitRelExpression(ctx: OberonParser.RelExpressionContext): Unit =
       visitBinExpression(ctx.left, ctx.right, expression(ctx.opr.getText))
 
@@ -686,6 +691,10 @@ class ParserVisitor {
       val atrib = ctx.name.getText
 
       assignmentAlt = RecordAssignment(record, atrib)
+    }
+
+    override def visitPointerAssignment(ctx: OberonParser.PointerAssignmentContext): Unit = {
+      assignmentAlt = PointerAssignment(ctx.pointer.getText)
     }
   }
 

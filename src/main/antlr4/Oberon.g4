@@ -68,8 +68,8 @@ expression
  | name = qualifiedName                                                                   #Variable
  | name = qualifiedName '(' arguments? ')'                                                #FunctionCall
  | exp = expression '.' name = Id                                                         #FieldAccess
-// | name = Id '^'                                                                          #PointerVarAccess
  | arrayBase = expression '[' index = expression ']'                                      #ArraySubscript
+  | name = Id '^'                                                                          #PointerAccess
  | left = expression opr = ('=' | '#' | '<' | '<=' | '>' | '>=')  right = expression      #RelExpression
  | left = expression opr = ('*' | '/' | '&&') right = expression                          #MultExpression
  | left = expression opr = ('+' | '-' | '||') right = expression                          #AddExpression
@@ -107,7 +107,7 @@ designator
   : var = Id                                                          #VarAssignment
   | array = expression '[' elem = expression ']'                      #ArrayAssignment
   | record = expression '.' name = Id                                 #RecordAssignment
-//  | pointer = Id '^'                                                  #PointerAssignment
+  | pointer = Id '^'                                                  #PointerAssignment
   ;
 
 caseAlternative
