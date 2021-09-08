@@ -74,7 +74,7 @@ class ParserVisitor {
     variables = ctx.declarations().varDeclaration().asScala.toList.map(v => visitVariableDeclaration(v)).flatten
     val procedures = ctx.declarations().procedure().asScala.toList.map(p => visitProcedureDeclaration(p))
     val userDefinedTypes = ctx.declarations().userTypeDeclaration().asScala.toList.map(t => visitUserDefinedType(t))
-//    val userTypes = ctx.declarations().userTypeDeclaration().asScala.toList.map(t => visitUserType(t))
+    val userTypes = ctx.declarations().userTypeDeclaration().asScala.toList.map(t => visitUserType(t)) // Verificar se é necessário mesmo.
     val block = visitModuleBlock(ctx.block())
 
     module = OberonModule(name.getText, submodules, userTypes  , userDefinedTypes, constants, variables, procedures, block)
@@ -717,10 +717,10 @@ class ParserVisitor {
       uType = ArrayType(name, length, baseType)
     }
 
-//    override def visitRecordTypeDeclaration(ctx: OberonParser.RecordTypeDeclarationContext): Unit = {
-//      val typeVisitor = new ParserVisitor()
-//      val name = ctx.getText
-//
+    override def visitRecordTypeDeclaration(ctx: OberonParser.PointerTypeDeclarationContext): Unit = {
+      val typeVisitor = new ParserVisitor()
+      val name = ctx.getText
+
 //      ctx.vars.asScala.toList.foreach(variable => {
 //        val varList = visitVariableDeclaration(variable)
 //
@@ -728,9 +728,9 @@ class ParserVisitor {
 //          variablesList += v
 //        })
 //      })
-//
-//      uType = PointerType(name, baseType)
-//    }
+
+      uType = PointerType(name, baseType)
+    }
   }
 
 }
