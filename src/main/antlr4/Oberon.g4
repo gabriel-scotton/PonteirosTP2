@@ -69,7 +69,7 @@ expression
  | name = qualifiedName '(' arguments? ')'                                                #FunctionCall
  | exp = expression '.' name = Id                                                         #FieldAccess
  | arrayBase = expression '[' index = expression ']'                                      #ArraySubscript
-  | name = Id '^'                                                                          #PointerAccess
+ | name = Id '^'                                                                          #PointerAccess
  | left = expression opr = ('=' | '#' | '<' | '<=' | '>' | '>=')  right = expression      #RelExpression
  | left = expression opr = ('*' | '/' | '&&') right = expression                          #MultExpression
  | left = expression opr = ('+' | '-' | '||') right = expression                          #AddExpression

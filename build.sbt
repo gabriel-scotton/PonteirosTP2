@@ -39,3 +39,4 @@ libraryDependencies += "org.ow2.asm" % "asm" % "9.1"
 
 Compile / unmanagedResourceDirectories += baseDirectory.value / "target/scala-2.13/src_managed/main/antlr4/"
 
+//excludeFilter in unmanagedSources := "butler.scala"
