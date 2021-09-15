@@ -69,6 +69,7 @@ expression
  | name = qualifiedName '(' arguments? ')'                                                #FunctionCall
  | exp = expression '.' name = Id                                                         #FieldAccess
  | arrayBase = expression '[' index = expression ']'                                      #ArraySubscript
+ | name = Id '^'                                                                          #PointerAccess
  | left = expression opr = ('=' | '#' | '<' | '<=' | '>' | '>=')  right = expression      #RelExpression
  | left = expression opr = ('*' | '/' | '&&') right = expression                          #MultExpression
  | left = expression opr = ('+' | '-' | '||') right = expression                          #AddExpression
@@ -106,7 +107,7 @@ designator
   : var = Id                                                          #VarAssignment
   | array = expression '[' elem = expression ']'                      #ArrayAssignment
   | record = expression '.' name = Id                                 #RecordAssignment
-//  | pointer = Id '^'                                                  #PointerAssignment
+  | pointer = Id '^'                                                  #PointerAssignment
   ;
 
 caseAlternative
@@ -139,8 +140,8 @@ oberonType
  | 'CHAR'            #CharacterType
  | 'BOOLEAN'         #BooleanType
  | 'STRING'          #StringType
- | userType          #ArrayRecordPointer
  | name = Id         #ReferenceType        // Reference for user defined types
+ | userType          #ComplexType
  ;
 
 INT : '-'? Digit+;
