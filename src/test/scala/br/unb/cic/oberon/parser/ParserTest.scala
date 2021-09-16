@@ -2149,10 +2149,23 @@ class ParserTestSuite extends AnyFunSuite {
   test("Testing the oberon pointerAssign1 code") {
     val module = ScalaParser.parseResource("Pointers/pointerAssign1.oberon")
 
+    //test if there are 5 statments in stmts list
     module.stmt.getOrElse(None) match {
       case SequenceStmt(stmt) => assert(stmt.length == 5)
-      case _ => fail("This module should have 5 statements!")
+      case _ => fail("This module should have 5 statements!"
     }
+
+    val sequence = module.stmt.get.asInstanceOf[SequenceStmt]
+    val stmts = sequence.stmts
+    assert(stmts(0) == AssignmentStmt("a", IntValue(1)))
+    assert(stmts(1) == AssignmentStmt("b", RealValue(1.1)))
+    assert(stmts(2) == AssignmentStmt("c", CharValue('c')))
+    assert(stmts(3) == AssignmentStmt("d", BoolValue(true)))
+    assert(stmts(4) == AssignmentStmt("e", StringValue("Hello.")))
+
+
+
+
 
   }
 }
