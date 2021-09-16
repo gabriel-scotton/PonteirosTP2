@@ -1,13 +1,11 @@
 package br.unb.cic.oberon.parser
 
-import br.unb.cic.oberon.ast
+import br.unb.cic.oberon.ast._
+import org.scalatest.funsuite.AnyFunSuite
 
 import java.nio.file.{Files, Paths}
-import org.scalatest.funsuite.AnyFunSuite
-import br.unb.cic.oberon.ast._
 
 class ParserTestSuite extends AnyFunSuite {
-
   test("Testing the oberon simple01 code") {
     val module = ScalaParser.parseResource("simple/simple01.oberon")
 
@@ -88,11 +86,11 @@ class ParserTestSuite extends AnyFunSuite {
     assert(module.name == "SimpleModule")
     assert(module.constants.size == 2)
     assert(module.constants.head == Constant("x", AddExpression(IntValue(5), MultExpression(IntValue(10), IntValue(3)))))
-      assert(module.constants(1) == Constant("y",
-        AddExpression(IntValue(5),
-         DivExpression(
-           MultExpression(IntValue(10), IntValue(3)),
-           IntValue(5)))))
+    assert(module.constants(1) == Constant("y",
+      AddExpression(IntValue(5),
+        DivExpression(
+          MultExpression(IntValue(10), IntValue(3)),
+          IntValue(5)))))
 
     assert(module.variables.size == 2)
     assert(module.variables.head == VariableDeclaration("abc", IntegerType))
@@ -602,7 +600,7 @@ class ParserTestSuite extends AnyFunSuite {
 
   }
 
-   test("Testing the oberon stmt15 code. This module has a For statement") {
+  test("Testing the oberon stmt15 code. This module has a For statement") {
     val module = ScalaParser.parseResource("stmts/stmt15.oberon")
 
     assert(module.name == "SimpleModule")
@@ -634,7 +632,7 @@ class ParserTestSuite extends AnyFunSuite {
       case _ => fail("expecting an assigment stmt and if-then stmt")
     }
 
-     assert(stmts(2) == WriteStmt(VarExpression("z")))
+    assert(stmts(2) == WriteStmt(VarExpression("z")))
 
   }
 
@@ -669,7 +667,7 @@ class ParserTestSuite extends AnyFunSuite {
       case _ => fail("expecting an assigment stmt and if-then stmt")
     }
 
-     assert(stmts(2) == WriteStmt(VarExpression("z")))
+    assert(stmts(2) == WriteStmt(VarExpression("z")))
 
   }
 
@@ -1489,7 +1487,7 @@ class ParserTestSuite extends AnyFunSuite {
     stmts(2) match {
       case IfElseStmt(cond, s1, s2) =>
         assert(cond == GTExpression(VarExpression("x"),VarExpression("max")))
-		assert(s1 == EAssignmentStmt(ArrayAssignment(VarExpression("array"), IntValue(0)), VarExpression("x")))
+        assert(s1 == EAssignmentStmt(ArrayAssignment(VarExpression("array"), IntValue(0)), VarExpression("x")))
         assert(s2.isEmpty) // the else stmt is None
       case _ => fail("expecting an if-then stmt")
     }
@@ -1524,9 +1522,9 @@ class ParserTestSuite extends AnyFunSuite {
     val sequence = module.stmt.get.asInstanceOf[SequenceStmt]
     val stmts = sequence.stmts
 
-	  assert(stmts.head == EAssignmentStmt(ArrayAssignment(VarExpression("v"), IntValue(2)), IntValue(3)))
-	  assert(stmts(1) == AssignmentStmt(("sum"), AddExpression(IntValue(9),IntValue(2))))
-	  assert(stmts(2) == EAssignmentStmt(ArrayAssignment(VarExpression("v"), IntValue(2)), VarExpression("sum")))
+    assert(stmts.head == EAssignmentStmt(ArrayAssignment(VarExpression("v"), IntValue(2)), IntValue(3)))
+    assert(stmts(1) == AssignmentStmt(("sum"), AddExpression(IntValue(9),IntValue(2))))
+    assert(stmts(2) == EAssignmentStmt(ArrayAssignment(VarExpression("v"), IntValue(2)), VarExpression("sum")))
   }
 
   test("Testing the oberon ArrayAssignmentStmt05 code. This module has an assignmet array with sum in the index") {
@@ -1573,7 +1571,7 @@ class ParserTestSuite extends AnyFunSuite {
 
     assert(module.userTypes.size == 5)
 
-    assert(module.userTypes(0) == ArrayType("m_id", 15, IntegerType))
+    assert(module.userTypes(0).baseType == ArrayType(15, IntegerType))
 
   }
 
@@ -1610,11 +1608,11 @@ class ParserTestSuite extends AnyFunSuite {
   test("Testing the oberon ExpressionNameParser3 code. This module tests if the parser can see expression name with more than two words"){
     val module = ScalaParser.parseResource("stmts/ExpressionNameParser3.oberon")
 
-  	assert(module.name == "ExpressionNameModule")
+    assert(module.name == "ExpressionNameModule")
 
-  	assert(module.stmt.isDefined)
+    assert(module.stmt.isDefined)
 
-  	assert(module.stmt.get.asInstanceOf[WriteStmt].expression.isInstanceOf[FieldAccessExpression])
+    assert(module.stmt.get.asInstanceOf[WriteStmt].expression.isInstanceOf[FieldAccessExpression])
 
     assert(module.stmt.get.asInstanceOf[WriteStmt].expression.asInstanceOf[FieldAccessExpression].exp.isInstanceOf[FieldAccessExpression])
 
@@ -1649,7 +1647,7 @@ class ParserTestSuite extends AnyFunSuite {
 
     assert(module.stmt.get.asInstanceOf[SequenceStmt].stmts.head.asInstanceOf[AssignmentStmt].exp.asInstanceOf[AddExpression].right.asInstanceOf[MultExpression].left.isInstanceOf[FieldAccessExpression])
 
-	  assert(module.stmt.get.asInstanceOf[SequenceStmt].stmts.head.asInstanceOf[AssignmentStmt].exp.asInstanceOf[AddExpression].right.asInstanceOf[MultExpression].right.isInstanceOf[FieldAccessExpression])
+    assert(module.stmt.get.asInstanceOf[SequenceStmt].stmts.head.asInstanceOf[AssignmentStmt].exp.asInstanceOf[AddExpression].right.asInstanceOf[MultExpression].right.isInstanceOf[FieldAccessExpression])
 
 
   }
@@ -1673,17 +1671,17 @@ class ParserTestSuite extends AnyFunSuite {
 
     val typeList = module.userTypes
 
-    val halls = RecordType("HALLS", List(VariableDeclaration("integrante", BooleanType),
+    val halls = RecordType(List(VariableDeclaration("integrante", BooleanType),
       VariableDeclaration("matricula",IntegerType)))
 
-    val halls_array = ArrayType("HALLS_array", 9, ReferenceToUserDefinedType("HALLS"))
+    val halls_array = ArrayType(9, ReferenceToUserDefinedType("HALLS"))
 
     val typetoTest = List(halls, halls_array)
 
     var it: Int = 0
 
     typeList.foreach(t => {
-      assert(t == typetoTest(it))
+      assert(t.baseType == typetoTest(it))
       it += 1
     })
 
@@ -1698,21 +1696,20 @@ class ParserTestSuite extends AnyFunSuite {
 
     val typeList = module.userTypes
 
-    val test_array = ArrayType("test_array", 5, BooleanType)
+    val test_array = ArrayType(5, BooleanType)
 
-    val tipo1 = RecordType("tipo1", List(
+    val tipo1 = RecordType(List(
       VariableDeclaration("num", IntegerType),
       VariableDeclaration("numum", ReferenceToUserDefinedType("test_array"))))
 
-    val tipo2 =  RecordType("tipo2",
-      List(VariableDeclaration("num_record", ReferenceToUserDefinedType("tipo1"))))
+    val tipo2 =  RecordType(List(VariableDeclaration("num_record", ReferenceToUserDefinedType("tipo1"))))
 
     val typetoTest = List(test_array, tipo1, tipo2)
 
     var it: Int = 0
 
     typeList.foreach(t => {
-      assert(t == typetoTest(it))
+      assert(t.baseType == typetoTest(it))
       it += 1
     })
 
@@ -1727,12 +1724,12 @@ class ParserTestSuite extends AnyFunSuite {
 
     val listDeclaration = List(VariableDeclaration("size", IntegerType),
       VariableDeclaration("variables", ReferenceToUserDefinedType("cplusplus")), VariableDeclaration("Varinho",
-      ReferenceToUserDefinedType("myType")))
+        ReferenceToUserDefinedType("myType")))
 
 
-    assert(module.userTypes(0) == ArrayType("cplusplus", 10, BooleanType))
-    assert(module.userTypes(1) == RecordType("java", listDeclaration))
-    assert(module.userTypes(2) == ArrayType("python", 5, ReferenceToUserDefinedType("java")))
+    assert(module.userTypes(0).baseType == ArrayType(10, BooleanType))
+    assert(module.userTypes(1).baseType == RecordType(listDeclaration))
+    assert(module.userTypes(2).baseType == ArrayType(5, ReferenceToUserDefinedType("java")))
   }
 
   test("Testing the oberon userTypeSimple05 code module. This module has some user type declarations with a variables using theses types"){
@@ -1764,20 +1761,20 @@ class ParserTestSuite extends AnyFunSuite {
 
     val typeList = module.userTypes
 
-    val cheesewithbread = ArrayType("cheesewithbread", 10, IntegerType)
+    val cheesewithbread = ArrayType(10, IntegerType)
 
-    val cheesewithoutbread = RecordType("cheesewithoutbread", List(
+    val cheesewithoutbread = RecordType(List(
       VariableDeclaration("var1", IntegerType),
       VariableDeclaration("var2", ReferenceToUserDefinedType("cheesewithbread"))))
 
-    val cheesewithhalfabread =  ArrayType("cheesewithhalfabread", 100000, ReferenceToUserDefinedType("cheesewithoutbread"))
+    val cheesewithhalfabread =  ArrayType(100000, ReferenceToUserDefinedType("cheesewithoutbread"))
 
     val typetoTest = List(cheesewithbread, cheesewithoutbread, cheesewithhalfabread)
 
     var it: Int = 0
 
     typeList.foreach(t => {
-      assert(t == typetoTest(it))
+      assert(t.baseType == typetoTest(it))
       it += 1
     })
 
