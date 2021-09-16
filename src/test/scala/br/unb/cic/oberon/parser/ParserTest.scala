@@ -2152,20 +2152,15 @@ class ParserTestSuite extends AnyFunSuite {
     //test if there are 5 statments in stmts list
     module.stmt.getOrElse(None) match {
       case SequenceStmt(stmt) => assert(stmt.length == 5)
-      case _ => fail("This module should have 5 statements!"
+      case _ => fail("This module should have 5 statements!")
     }
 
     val sequence = module.stmt.get.asInstanceOf[SequenceStmt]
     val stmts = sequence.stmts
-    assert(stmts(0) == AssignmentStmt("a", IntValue(1)))
-    assert(stmts(1) == AssignmentStmt("b", RealValue(1.1)))
-    assert(stmts(2) == AssignmentStmt("c", CharValue('c')))
-    assert(stmts(3) == AssignmentStmt("d", BoolValue(true)))
-    assert(stmts(4) == AssignmentStmt("e", StringValue("Hello.")))
-
-
-
-
-
+    assert(stmts.head == EAssignmentStmt(PointerAssignment("a"), IntValue(1)))
+    assert(stmts(1) == EAssignmentStmt(PointerAssignment("b"), RealValue(1.1)))
+    assert(stmts(2) == EAssignmentStmt(PointerAssignment("c"), CharValue('c')))
+    assert(stmts(3) == EAssignmentStmt(PointerAssignment("d"), BoolValue(true)))
+    assert(stmts(4) == EAssignmentStmt(PointerAssignment("e"), StringValue("Hello.")))
   }
 }
