@@ -11,7 +11,7 @@ BEGIN
     a^ := 1;
     b^ := 1.1;
     c^ := 'c';
-    d^ := 'True';
+    d^ := True;
     e^ := "Hello."
 END
 

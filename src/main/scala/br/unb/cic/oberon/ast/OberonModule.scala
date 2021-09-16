@@ -215,10 +215,6 @@ case class UserDefinedType(name: String, baseType: Type) {
   def accept(v: OberonVisitor): v.T = v.visit(this)
 }
 
-//case class RecordType(name: String, variables: List[VariableDeclaration]) extends UserDefinedType
-//case class ArrayType(name: String, length: Int, variableType: Type) extends UserDefinedType
-//case class PointerType(name: String, variableType: Type) extends UserDefinedType
-
 /** The hierarchy for the Oberon supported types */
 sealed trait Type {
   def accept(v: OberonVisitor): v.T = v.visit(this)
