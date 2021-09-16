@@ -13,10 +13,10 @@ VAR
     b : POINTER TO notas;
 
 BEGIN
-    a.nome := "Manuela"
-    a.idade := 23
+    a.nome := "Manuela";
+    a.idade := 23;
 
-    b^[0] := 9.5
+    b^[0] := 9.5;
     b^[2] := 9.0
 END
 

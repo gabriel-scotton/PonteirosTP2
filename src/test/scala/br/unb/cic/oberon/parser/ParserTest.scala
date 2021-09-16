@@ -2124,4 +2124,35 @@ class ParserTestSuite extends AnyFunSuite {
     val constant2 = ScalaParser.parserREPL(const2)
     assert(constant2 == REPLConstant(Constant("y",AddExpression(VarExpression("x"),IntValue(1)))))
   }
+
+  test("Testing the oberon pointerDecl1 code") {
+    val module = ScalaParser.parseResource("Pointers/pointerDecl1.oberon")
+
+    assert(module.variables.size == 5)
+    assert(module.variables(0) == VariableDeclaration("a", IntegerType))
+    assert(module.variables(1) == VariableDeclaration("b", RealType))
+    assert(module.variables(2) == VariableDeclaration("c", CharType))
+    assert(module.variables(3) == VariableDeclaration("d", BooleanType))
+    assert(module.variables(4) == VariableDeclaration("e", StringType))
+  }
+
+  test("Testing the oberon pointerDecl2 code") {
+    val module = ScalaParser.parseResource("Pointers/pointerDecl2.oberon")
+
+    assert(module.userType() == "SimpleModule")
+    assert(module.variables.size == 2)
+    val halls = RecordType(List(VariableDeclaration("integrante", BooleanType),
+      VariableDeclaration("matricula",IntegerType)))
+    assert(module.variables(0) == VariableDeclaration("a", IntValue(5)))
+  }
+
+  test("Testing the oberon pointerAssign1 code") {
+    val module = ScalaParser.parseResource("Pointers/pointerAssign1.oberon")
+
+    module.stmt.getOrElse(None) match {
+      case SequenceStmt(stmt) => assert(stmt.length == 5)
+      case _ => fail("This module should have 5 statements!")
+    }
+
+  }
 }

@@ -6,7 +6,7 @@ TYPE
         idade: INTEGER;
     END
 
-    notas = ARRAY 3 OF REAL
+    notas = ARRAY 3 OF REAL;
 
 VAR
   a : POINTER TO aluno;
